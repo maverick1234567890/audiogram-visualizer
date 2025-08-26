@@ -36,7 +36,7 @@ export function ChartModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-screen h-screen max-w-none max-h-none m-0 rounded-none border-0 overflow-hidden p-4 bg-white dark:bg-gray-900" data-testid="chart-modal">
+      <DialogContent className="w-screen h-screen max-w-none max-h-none m-0 rounded-none border-0 overflow-hidden p-8 bg-white dark:bg-gray-900" data-testid="chart-modal">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-2xl">{title}</DialogTitle>
           <DialogDescription>
@@ -44,7 +44,7 @@ export function ChartModal({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col h-[calc(100vh-120px)]">
+        <div className="flex flex-col h-[calc(100vh-160px)]">
           {/* Editing Controls */}
           <div className="flex items-center justify-center mb-4">
             <fieldset className="flex items-center gap-4">
@@ -76,17 +76,35 @@ export function ChartModal({
             </fieldset>
           </div>
           
-          {/* Chart - Full screen with automatic scaling */}
+          {/* Chart - Proportional scaling to fit container */}
           <div className="flex-1 min-h-0 flex items-center justify-center">
-            <div className="w-full h-full max-w-full max-h-full flex items-center justify-center">
-              <AudiogramChart
-                ear={ear}
-                data={data[ear]}
-                editingMode={editingMode}
-                onUpdateThreshold={onUpdateThreshold}
-                onEnlarge={() => {}} // No enlarge in modal
-                className="w-full h-full object-contain"
-              />
+            <div 
+              className="flex items-center justify-center"
+              style={{
+                width: '100%',
+                height: '100%',
+                maxWidth: 'calc(100vw - 64px)',
+                maxHeight: 'calc(100vh - 200px)'
+              }}
+            >
+              <div
+                className="relative"
+                style={{
+                  width: 'min(100%, calc((100vh - 200px) * 1.17))', // Maintain aspect ratio: if height limited, scale width
+                  height: 'min(100%, calc((100vw - 64px) / 1.17))', // If width limited, scale height
+                  maxWidth: '100%',
+                  maxHeight: '100%'
+                }}
+              >
+                <AudiogramChart
+                  ear={ear}
+                  data={data[ear]}
+                  editingMode={editingMode}
+                  onUpdateThreshold={onUpdateThreshold}
+                  onEnlarge={() => {}} // No enlarge in modal
+                  className="w-full h-full"
+                />
+              </div>
             </div>
           </div>
         </div>
