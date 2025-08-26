@@ -37,11 +37,11 @@ export function ChartModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-[95vw] max-h-[95vh] w-auto h-auto overflow-hidden bg-white dark:bg-gray-900 border shadow-2xl"
+        className="max-w-[90vw] max-h-[90vh] w-auto h-auto overflow-hidden bg-white dark:bg-gray-900 border shadow-2xl"
         data-testid="chart-modal"
         style={{
-          width: 'min(95vw, calc(95vh * 1.17))',
-          height: 'min(95vh, calc(95vw / 1.17))'
+          width: 'min(90vw, calc((90vh - 120px) * 1.17 + 48px))',
+          height: 'min(90vh, calc((90vw - 48px) / 1.17 + 120px))'
         }}
       >
         <DialogHeader className="pb-4">
@@ -89,8 +89,8 @@ export function ChartModal({
               className="w-full"
               style={{
                 aspectRatio: '1.17',
-                maxWidth: 'calc(95vw - 48px)',
-                maxHeight: 'calc(95vh - 160px)'
+                width: 'min(calc(90vw - 48px), calc((90vh - 140px) * 1.17))',
+                height: 'min(calc(90vh - 140px), calc((90vw - 48px) / 1.17))'
               }}
             >
               <AudiogramChart
