@@ -77,8 +77,8 @@ export function ChartModal({
           </div>
           
           {/* Chart */}
-          <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
-            <div className="w-full h-full max-w-[90vw] max-h-[calc(100vh-150px)]">
+          <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center p-4">
+            <div className="w-full h-[70vh] max-w-[80vw] max-h-[70vh]">
               <AudiogramChart
                 ear={ear}
                 data={data[ear]}
