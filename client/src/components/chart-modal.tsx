@@ -77,15 +77,17 @@ export function ChartModal({
           </div>
           
           {/* Chart */}
-          <div className="flex-1 min-h-0 overflow-hidden">
-            <AudiogramChart
-              ear={ear}
-              data={data[ear]}
-              editingMode={editingMode}
-              onUpdateThreshold={onUpdateThreshold}
-              onEnlarge={() => {}} // No enlarge in modal
-              className="h-full w-full"
-            />
+          <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center">
+            <div className="w-full h-full max-w-[90vw] max-h-[calc(100vh-150px)]">
+              <AudiogramChart
+                ear={ear}
+                data={data[ear]}
+                editingMode={editingMode}
+                onUpdateThreshold={onUpdateThreshold}
+                onEnlarge={() => {}} // No enlarge in modal
+                className="h-full w-full"
+              />
+            </div>
           </div>
         </div>
       </DialogContent>
