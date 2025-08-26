@@ -24,7 +24,7 @@ export function Login({ onAuthenticated }: LoginProps) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Check stored password or default
-    const storedPassword = localStorage.getItem('website_password') || 'Konijntje123';
+    const storedPassword = localStorage.getItem('website_password') || 'Verette9';
     
     if (password === storedPassword) {
       // Store authentication in sessionStorage (cleared on tab close)
