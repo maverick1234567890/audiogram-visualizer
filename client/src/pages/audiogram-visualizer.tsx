@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { PatientForm } from '@/components/patient-form';
 import { AudiogramChart } from '@/components/audiogram-chart';
 import { ChartModal } from '@/components/chart-modal';
+import { AdminPanel } from '@/components/admin-panel';
 import { useAudiogramState } from '@/hooks/use-audiogram-state';
 import { exportToPNG } from '@/lib/export-utils';
 
@@ -238,6 +239,9 @@ export default function AudiogramVisualizer() {
         onUpdateThreshold={updateThreshold}
         onSetEditingMode={setEditingMode}
       />
+
+      {/* Admin Panel */}
+      <AdminPanel />
     </div>
   );
 }

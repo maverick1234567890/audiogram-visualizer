@@ -23,7 +23,10 @@ export function Login({ onAuthenticated }: LoginProps) {
     // Simulate a small delay for security
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    if (password === 'Konijntje123') {
+    // Check stored password or default
+    const storedPassword = localStorage.getItem('website_password') || 'Konijntje123';
+    
+    if (password === storedPassword) {
       // Store authentication in sessionStorage (cleared on tab close)
       // and localStorage (persistent across sessions)
       const authToken = btoa(Date.now().toString() + Math.random().toString());
