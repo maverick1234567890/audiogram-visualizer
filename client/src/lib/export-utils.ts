@@ -179,8 +179,8 @@ function drawAudiogramChart(
   drawAudiogramLine(ctx, startX + marginLeft, startY + marginTop, plotWidth, plotHeight, data.bone, true);
   drawAudiogramMarkers(ctx, startX + marginLeft, startY + marginTop, plotWidth, plotHeight, data.bone, color, 'bone', title.includes('Right'));
 
-  // Draw legend
-  const legendY = startY + height - 20;
+  // Draw legend (lowered to avoid collision with frequency axis)
+  const legendY = startY + height - 5;
   ctx.font = '12px Inter, sans-serif';
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
