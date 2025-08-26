@@ -1,0 +1,318 @@
+Project: Build a single-page React + TypeScript + Tailwind web app called “Audiogram Visualizer”. It must exactly match the visual layout of the provided screenshots (copy it ONE-TO-ONE), with the modifications and behaviors below. Use only client-side code. No backend.
+
+Prefer these libraries:
+
+React + Vite
+
+TailwindCSS
+
+Headless UI (Dialog) or Radix Dialog for the enlarge modal
+
+html2canvas for PNG export
+
+clsx for className composition
+
+If you choose a different stack on Replit, still deliver the exact same behavior and pixel-identical look.
+
+A. Page layout (copy what you see)
+
+Top app bar / heading
+
+Centered title text: Audiogram Visualizer (this replaces “Audiogram Assessment Tool”).
+
+Font weight, size, spacing should match the screenshot. Use a clean sans font (e.g., Inter) and replicate the same letter-spacing.
+
+Add a Dark Mode toggle at the top-right (sun/moon icon). It flips the whole UI theme (see Dark Mode section).
+
+Patient Information card (full-width container under the title, with the same light rounded card look)
+
+Section heading: Patient Information.
+
+Three labeled inputs in a single row (match spacing/width from screenshot):
+
+Patient’s Name (mandatory, show a small star “” in the label)*
+
+Date of Examination (DD/MM/YYYY) (mandatory, star)
+
+Birth Date (DD/MM/YYYY) (mandatory, star)
+
+Inputs must look exactly like the screenshot (rounded, subtle border, placeholder text).
+
+When a mandatory field is empty at export time, its label and input outline turn red, and the page auto-scrolls to the Patient Information card.
+
+Main content grid (beneath Patient Information)
+
+Left chart card: “Right Ear Audiogram”
+
+Right chart card: “Left Ear Audiogram”
+
+Both charts sit side-by-side and occupy all horizontal space where the side columns used to be.
+
+Remove the original Right Ear Data and Left Ear Data side panels entirely.
+
+Each chart card has:
+
+A small “enlarge” icon in the bottom-left corner of the plot area (a tiny square-with-arrows icon that matches the screenshot’s position/size).
+
+Title centered above the plot: “Right Ear Audiogram” or “Left Ear Audiogram”.
+
+X-axis labeled Frequency (Hz).
+
+Y-axis labeled Hearing Level (dB HL).
+
+Y-axis range: −10 to 80 (tick every 10 dB).
+
+X-axis ticks: 125, 250, 500, 1k, 1.5k, 2k, 3k, 4k, 6k, 8k.
+
+All frequency labels must be horizontal (not vertical).
+
+Subtle gridlines exactly like the screenshot.
+
+A legend under each chart:
+
+Right ear: Air Conduction (O) — Bone Conduction (<)
+
+Left ear: Air Conduction (X) — Bone Conduction (>)
+
+(Use the same phrasing and em-dash spacing as shown. If the exact characters differ in the screenshot, still render visually identical text.)
+
+Footer controls bar (full width at the very bottom)
+
+Group 1: Right Ear Editing: radio buttons Air / Bone (only one active).
+
+Group 2: Left Ear Editing: radio buttons Air / Bone.
+
+Reset button (small, subtle style that matches the screenshot).
+
+Export PNG primary button (styled like the screenshot’s purple/indigo button).
+
+Spacing and alignment must match the screenshot precisely.
+
+B. Chart rendering & markers (critical visual & style requirements)
+
+Draw both audiograms as line series across the defined X frequencies.
+
+Default values (at app load and after Reset):
+
+Air thresholds: 10 dB HL at all frequencies (flat line).
+
+Bone thresholds: 5 dB HL at all frequencies (flat dashed line).
+
+Right ear:
+
+Air: circle O
+
+Bone: < (less-than sign) style marker
+
+Left ear:
+
+Air: cross X
+
+Bone: > (greater-than sign) style marker
+
+Line styles:
+
+Air line = solid
+
+Bone line = dashed
+
+Marker visual details (very important):
+
+The markers must not be bold.
+
+Each marker has a thin outline that matches the chart background color to clearly separate the marker from the connecting line.
+
+For circles: add the thin outline outside the circle, and also a very thin inner ring (not fully filled—leave a hollow center).
+
+For < and > markers: draw the glyph with a tiny background-colored stroke (halo) around the edges.
+
+For the X marker: draw a stroked “X” with a tiny background-colored halo around each stroke.
+
+Marker size must match the screenshot proportions relative to the grid. Lines should pass through the markers like in the image.
+
+If your charting library doesn’t support these exact marker borders, draw custom SVG markers and lines yourself in the chart layer. Prioritize a pixel-perfect match.
+
+C. Enlarge (full-screen) behavior & sync
+
+Clicking the small expand icon in the bottom-left of any chart opens a full-screen modal with that chart alone:
+
+The enlarged chart uses the exact same styling (grid, ticks, markers, legend, axes titles).
+
+You can edit in both sizes (small and enlarged). State is shared/synchronized—changes in one are instantly visible in the other.
+
+The modal has a close button (X) in the top-right. Background scroll is locked while open. The modal uses the same dark/light theme as the page.
+
+D. Editing mechanics (explicit requirements)
+
+The screenshot doesn’t show how editing works, so implement the following exact, intuitive mechanism:
+
+Editing mode selection
+
+At the bottom controls, the user selects which ear and which conduction they are editing (Air or Bone).
+
+Only one ear+conduction pair is “active” at a time for interactions.
+
+Mouse interactions on the chart
+
+Click anywhere near a frequency’s vertical gridline to set that frequency’s threshold at the clicked dB.
+
+Snap horizontally to the nearest frequency tick (125, 250, 500, 1k, 1.5k, 2k, 3k, 4k, 6k, 8k).
+
+Snap vertically to the nearest 5 dB step between −10 and 80.
+
+Drag a marker up/down to change that frequency’s value continuously, still snapping to 5 dB steps.
+
+Show a small tooltip during hover/drag: e.g., 1k • 10 dB HL.
+
+Keyboard accessibility
+
+When a marker is focused (Tab to cycle markers), ArrowUp/ArrowDown adjusts by 5 dB. Home/End jump to −10/80.
+
+Constraints
+
+Clamp values to the range [−10, 80].
+
+Keep line continuity while editing (update the polyline/curve live).
+
+E. Reset behavior
+
+Reset clears all Patient Information fields and restores all thresholds to their defaults (Right: Air=10, Bone=5; Left: Air=10, Bone=5).
+
+It also clears any validation error highlights.
+
+F. Export PNG behavior
+
+Clicking Export PNG:
+
+Validate all three Patient Information fields are filled.
+
+If any are missing: Cancel export, show an inline error message under the Patient Information header, highlight missing inputs in red, and auto-scroll the page so the Patient Information card is fully visible.
+
+If valid: generate a single PNG that contains, exactly as laid out on screen:
+
+The Patient Information box (top left).
+
+The two audiograms side-by-side (Right ear on the left, Left ear on the right).
+
+Use the current theme (light or dark) so what you see is what you get.
+
+Auto-download the file with this name format (sanitize illegal filename characters):
+
+audio_[Date of Examination]_[Patient’s Name]_[Date of Birth].png
+
+
+Example: audio_12-03-2025_Jordan-Smith_06-09-1994.png
+
+Implementation detail: use html2canvas (or equivalent) to rasterize the composed container. Ensure SVG markers render crisply at 2x DPR.
+
+G. Dark Mode
+
+Add a toggle in the header (sun/moon).
+
+Persist the user’s choice in localStorage.
+
+In dark mode:
+
+Background becomes a near-black neutral.
+
+Cards become dark gray with subtle borders.
+
+Text, gridlines, axes, legends, markers, and the marker background-colored outlines must adapt so everything is legible with identical contrast hierarchy as the light theme.
+
+Buttons and focus rings should have accessible contrast.
+
+The exported PNG uses whatever theme is active at export time.
+
+H. Exact visuals to copy (what’s on the screenshots)
+
+Reproduce these exact visuals:
+
+Spacing & Containers
+
+Generous top margin above the title, identical vertical rhythm between sections.
+
+Rounded cards, soft shadow, thin border.
+
+Same paddings inside cards and around chart areas.
+
+Typography
+
+Title large and bold, section headers medium-bold, form labels regular, helper text small and gray.
+
+Charts
+
+Light gray gridlines evenly spaced.
+
+Y-axis numbers at −10, 0, 10, 20, …, 80.
+
+X-axis tick labels exactly: 125, 250, 500, 1k, 1.5k, 2k, 3k, 4k, 6k, 8k horizontally oriented.
+
+Right Ear default: Air line at 10 with O markers, Bone dashed at 5 with < markers.
+
+Left Ear default: Air line at 10 with X markers, Bone dashed at 5 with > markers.
+
+The enlarge icon is a tiny square-with-arrows (matching size/position shown: bottom-left of each chart area).
+
+Footer controls
+
+Two labeled groups with inline radios (“Right Ear Editing: Air / Bone”, “Left Ear Editing: Air / Bone”).
+
+A subtle Reset button, and a filled Export PNG button.
+
+Helper text (small gray text) that appears under the small charts, matching the wording in the screenshot:
+
+Right chart: Air Conduction (O) — Bone Conduction (<)
+
+Left chart: Air Conduction (X) — Bone Conduction (>)
+
+I. State model (for implementation)
+
+frequencies = [125, 250, 500, 1000, 1500, 2000, 3000, 4000, 6000, 8000]
+
+App state:
+
+type Thresholds = Record<number, number>; // dB per frequency
+interface EarData {
+  air: Thresholds;  // defaults 10s
+  bone: Thresholds; // defaults 5s
+}
+interface AppState {
+  right: EarData;
+  left: EarData;
+  editing: { ear: 'right' | 'left'; conduit: 'air' | 'bone' };
+  patient: { name: string; examDate: string; birthDate: string };
+  theme: 'light' | 'dark';
+}
+
+
+Keep one shared state; both small charts and the enlarged modal chart read/write the same state.
+
+J. Accessibility & polish
+
+All form fields labeled; mandatory star has aria-hidden="true" and an accessible “required” attribute.
+
+Radio groups use proper fieldsets and legends.
+
+Markers are keyboard-focusable with visible focus rings.
+
+Provide concise aria-live validation message on failed export.
+
+Smooth scroll to Patient Information on validation error.
+
+K. What to deliver on Replit
+
+A running app that matches the screenshots visually and meets all behaviors above.
+
+Source in a single project (/src with React + Tailwind).
+
+Clear instructions in README.md on how to run locally.
+
+No external services required.
+
+Notes about unknowns in the screenshot:
+
+The original images don’t show the exact click/drag behavior. I’ve explicitly specified the full interaction model (click near a frequency to set, drag to adjust, snap to 5 dB, keyboard arrows). Implement exactly that.
+
+The original images don’t show the dark mode style; implement a cohesive dark palette while preserving contrast and the marker-outline rule.
+
+Reminder: Everything else must be copied ONE-TO-ONE from the screenshots (layout, spacing, typography proportions, button shapes, legends, icon positions).
