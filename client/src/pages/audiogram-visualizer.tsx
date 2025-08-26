@@ -61,7 +61,7 @@ export default function AudiogramVisualizer() {
     setValidationErrors([]);
 
     try {
-      await exportToPNG(state.patient);
+      await exportToPNG(state.patient, state);
       toast({
         title: "Export Successful",
         description: "Audiogram has been exported as PNG.",

@@ -36,7 +36,7 @@ export function ChartModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl w-[95vw] max-h-[95vh] overflow-hidden" data-testid="chart-modal">
+      <DialogContent className="max-w-4xl w-[90vw] max-h-[90vh] overflow-hidden p-4" data-testid="chart-modal">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
@@ -44,7 +44,7 @@ export function ChartModal({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col gap-4 h-[75vh]">
+        <div className="flex flex-col gap-3 h-[70vh]">
           {/* Editing Controls */}
           <div className="flex items-center justify-center">
             <fieldset className="flex items-center gap-4">
@@ -77,14 +77,14 @@ export function ChartModal({
           </div>
           
           {/* Chart */}
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0 overflow-hidden">
             <AudiogramChart
               ear={ear}
               data={data[ear]}
               editingMode={editingMode}
               onUpdateThreshold={onUpdateThreshold}
               onEnlarge={() => {}} // No enlarge in modal
-              className="h-full"
+              className="h-full w-full"
             />
           </div>
         </div>
