@@ -286,5 +286,5 @@ function generateFilename(patientData: PatientData): string {
   const examDate = sanitize(patientData.examDate) || 'unknown';
   const birthDate = sanitize(patientData.birthDate) || 'unknown';
   
-  return `audio_${examDate}_${name}_${birthDate}.png`;
+  return `audiogram_${examDate}_${name}_${birthDate}.png`;
 }
