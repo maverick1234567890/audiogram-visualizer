@@ -238,36 +238,25 @@ export function AudiogramChart({
     });
   }, [data, ear, color, editingMode, onUpdateThreshold, handleMarkerMouseDown]);
 
+  // Check if this is being used in a modal (no enlarge functionality)
+  const isModal = onEnlarge.toString() === '() => {}';
+  
   return (
     <>
-      <Card className={`transition-colors duration-200 ${className}`} data-testid={`chart-${ear}`}>
-        <CardContent className="p-6">
-          <h3 className="text-lg font-semibold text-center mb-4">{title}</h3>
-          
-          <div className="relative chart-container">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute bottom-2 left-2 z-10 h-6 w-6 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              onClick={onEnlarge}
-              data-testid={`enlarge-${ear}`}
-              aria-label={`Enlarge ${ear} ear chart`}
-            >
-              <Expand className="h-3 w-3" />
-            </Button>
-            
-            <svg
-              ref={svgRef}
-              className="w-full h-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 audiogram-grid"
-              viewBox={`0 0 ${CHART_CONFIG.width} ${CHART_CONFIG.height}`}
-              preserveAspectRatio="xMidYMid meet"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-              onClick={handleChartClick}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseLeave}
-              data-testid={`chart-svg-${ear}`}
-            >
+      {isModal ? (
+        // Modal version - full size chart without card wrapper
+        <div className={`w-full h-full ${className}`} data-testid={`chart-${ear}`}>
+          <svg
+            ref={svgRef}
+            className="w-full h-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 audiogram-grid"
+            viewBox={`0 0 ${CHART_CONFIG.width} ${CHART_CONFIG.height}`}
+            preserveAspectRatio="xMidYMid meet"
+            onClick={handleChartClick}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            data-testid={`chart-svg-${ear}`}
+          >
               {/* Y-axis */}
               <line
                 x1={CHART_CONFIG.marginLeft}
@@ -407,6 +396,145 @@ export function AudiogramChart({
                 data-testid={`line-${ear}-bone`}
               />
               
+              {/* Y-axis */}
+              <line
+                x1={CHART_CONFIG.marginLeft}
+                y1={CHART_CONFIG.marginTop}
+                x2={CHART_CONFIG.marginLeft}
+                y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                stroke="#374151"
+                strokeWidth="2"
+              />
+              
+              {/* Y-axis ticks and labels */}
+              {yTicks.map(tick => (
+                <g key={`y-${tick.value}`}>
+                  <line
+                    x1={CHART_CONFIG.marginLeft - 5}
+                    y1={tick.position}
+                    x2={CHART_CONFIG.marginLeft + 5}
+                    y2={tick.position}
+                    stroke="#6b7280"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x={CHART_CONFIG.marginLeft - 15}
+                    y={tick.position + 4}
+                    textAnchor="end"
+                    className="text-xs fill-gray-600 dark:fill-gray-400"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
+                    {tick.value}
+                  </text>
+                </g>
+              ))}
+              
+              {/* Y-axis title */}
+              <text
+                x={25}
+                y={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight / 2}
+                textAnchor="middle"
+                className="text-sm fill-gray-700 dark:fill-gray-300"
+                style={{ fontFamily: 'Inter, sans-serif' }}
+                transform={`rotate(-90, 25, ${CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight / 2})`}
+              >
+                Hearing Level (dB HL)
+              </text>
+              
+              {/* X-axis */}
+              <line
+                x1={CHART_CONFIG.marginLeft}
+                y1={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                x2={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth}
+                y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                stroke="#374151"
+                strokeWidth="2"
+              />
+              
+              {/* X-axis ticks and labels */}
+              {xTicks.map(tick => (
+                <g key={`x-${tick.value}`}>
+                  <line
+                    x1={tick.position}
+                    y1={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight - 5}
+                    x2={tick.position}
+                    y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight + 5}
+                    stroke="#6b7280"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x={tick.position}
+                    y={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight + 20}
+                    textAnchor="middle"
+                    className="text-xs fill-gray-600 dark:fill-gray-400"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
+                    {tick.label}
+                  </text>
+                </g>
+              ))}
+              
+              {/* X-axis title */}
+              <text
+                x={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth / 2}
+                y={CHART_CONFIG.height - 20}
+                textAnchor="middle"
+                className="text-sm fill-gray-700 dark:fill-gray-300"
+                style={{ fontFamily: 'Inter, sans-serif' }}
+              >
+                Frequency (Hz)
+              </text>
+              
+              {/* Grid lines */}
+              <g className="grid-lines" opacity="0.2">
+                {/* Horizontal grid lines */}
+                {yTicks.map(tick => (
+                  <line
+                    key={`grid-h-${tick.value}`}
+                    x1={CHART_CONFIG.marginLeft}
+                    y1={tick.position}
+                    x2={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth}
+                    y2={tick.position}
+                    stroke="#6b7280"
+                    strokeWidth="1"
+                    className="text-gray-300 dark:text-gray-600"
+                  />
+                ))}
+                
+                {/* Vertical grid lines */}
+                {xTicks.map(tick => (
+                  <line
+                    key={`grid-v-${tick.value}`}
+                    x1={tick.position}
+                    y1={CHART_CONFIG.marginTop}
+                    x2={tick.position}
+                    y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                    stroke="#6b7280"
+                    strokeWidth="1"
+                    className="text-gray-300 dark:text-gray-600"
+                  />
+                ))}
+              </g>
+              
+              {/* Air conduction line (solid) */}
+              <polyline
+                points={generatePathString(data.air)}
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                data-testid={`line-${ear}-air`}
+              />
+              
+              {/* Bone conduction line (dashed) */}
+              <polyline
+                points={generatePathString(data.bone)}
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeDasharray="5,5"
+                data-testid={`line-${ear}-bone`}
+              />
+              
               {/* Air conduction markers */}
               {renderMarkers('air')}
               
@@ -414,12 +542,189 @@ export function AudiogramChart({
               {renderMarkers('bone')}
             </svg>
           </div>
-          
-          <div className={`mt-4 text-center text-sm text-gray-600 dark:text-gray-400`}>
-            <span className={colorClass}>{legend}</span>
-          </div>
-        </CardContent>
-      </Card>
+        ) : (
+          // Regular version with card wrapper  
+          <Card className={`transition-colors duration-200 ${className}`} data-testid={`chart-${ear}`}>
+            <CardContent className="p-6">
+              <h3 className="text-lg font-semibold text-center mb-4">{title}</h3>
+              
+              <div className="relative chart-container">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute bottom-2 left-2 z-10 h-6 w-6 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  onClick={onEnlarge}
+                  data-testid={`enlarge-${ear}`}
+                  aria-label={`Enlarge ${ear} ear chart`}
+                >
+                  <Expand className="h-3 w-3" />
+                </Button>
+                
+                <svg
+                  ref={svgRef}
+                  className="w-full h-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 audiogram-grid"
+                  viewBox={`0 0 ${CHART_CONFIG.width} ${CHART_CONFIG.height}`}
+                  preserveAspectRatio="xMidYMid meet"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  onClick={handleChartClick}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseLeave}
+                  data-testid={`chart-svg-${ear}`}
+                >
+                  {/* Y-axis */}
+                  <line
+                    x1={CHART_CONFIG.marginLeft}
+                    y1={CHART_CONFIG.marginTop}
+                    x2={CHART_CONFIG.marginLeft}
+                    y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                    stroke="#374151"
+                    strokeWidth="2"
+                  />
+                  
+                  {/* Y-axis ticks and labels */}
+                  {yTicks.map(tick => (
+                    <g key={`y-${tick.value}`}>
+                      <line
+                        x1={CHART_CONFIG.marginLeft - 5}
+                        y1={tick.position}
+                        x2={CHART_CONFIG.marginLeft + 5}
+                        y2={tick.position}
+                        stroke="#6b7280"
+                        strokeWidth="1"
+                      />
+                      <text
+                        x={CHART_CONFIG.marginLeft - 15}
+                        y={tick.position + 4}
+                        textAnchor="end"
+                        className="text-xs fill-gray-600 dark:fill-gray-400"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      >
+                        {tick.value}
+                      </text>
+                    </g>
+                  ))}
+                  
+                  {/* Y-axis title */}
+                  <text
+                    x={25}
+                    y={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight / 2}
+                    textAnchor="middle"
+                    className="text-sm fill-gray-700 dark:fill-gray-300"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                    transform={`rotate(-90, 25, ${CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight / 2})`}
+                  >
+                    Hearing Level (dB HL)
+                  </text>
+                  
+                  {/* X-axis */}
+                  <line
+                    x1={CHART_CONFIG.marginLeft}
+                    y1={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                    x2={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth}
+                    y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                    stroke="#374151"
+                    strokeWidth="2"
+                  />
+                  
+                  {/* X-axis ticks and labels */}
+                  {xTicks.map(tick => (
+                    <g key={`x-${tick.value}`}>
+                      <line
+                        x1={tick.position}
+                        y1={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight - 5}
+                        x2={tick.position}
+                        y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight + 5}
+                        stroke="#6b7280"
+                        strokeWidth="1"
+                      />
+                      <text
+                        x={tick.position}
+                        y={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight + 20}
+                        textAnchor="middle"
+                        className="text-xs fill-gray-600 dark:fill-gray-400"
+                        style={{ fontFamily: 'Inter, sans-serif' }}
+                      >
+                        {tick.label}
+                      </text>
+                    </g>
+                  ))}
+                  
+                  {/* X-axis title */}
+                  <text
+                    x={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth / 2}
+                    y={CHART_CONFIG.height - 20}
+                    textAnchor="middle"
+                    className="text-sm fill-gray-700 dark:fill-gray-300"
+                    style={{ fontFamily: 'Inter, sans-serif' }}
+                  >
+                    Frequency (Hz)
+                  </text>
+                  
+                  {/* Grid lines */}
+                  <g className="grid-lines" opacity="0.2">
+                    {/* Horizontal grid lines */}
+                    {yTicks.map(tick => (
+                      <line
+                        key={`grid-h-${tick.value}`}
+                        x1={CHART_CONFIG.marginLeft}
+                        y1={tick.position}
+                        x2={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth}
+                        y2={tick.position}
+                        stroke="#6b7280"
+                        strokeWidth="1"
+                        className="text-gray-300 dark:text-gray-600"
+                      />
+                    ))}
+                    
+                    {/* Vertical grid lines */}
+                    {xTicks.map(tick => (
+                      <line
+                        key={`grid-v-${tick.value}`}
+                        x1={tick.position}
+                        y1={CHART_CONFIG.marginTop}
+                        x2={tick.position}
+                        y2={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight}
+                        stroke="#6b7280"
+                        strokeWidth="1"
+                        className="text-gray-300 dark:text-gray-600"
+                      />
+                    ))}
+                  </g>
+                  
+                  {/* Air conduction line (solid) */}
+                  <polyline
+                    points={generatePathString(data.air)}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    data-testid={`line-${ear}-air`}
+                  />
+                  
+                  {/* Bone conduction line (dashed) */}
+                  <polyline
+                    points={generatePathString(data.bone)}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                    data-testid={`line-${ear}-bone`}
+                  />
+                  
+                  {/* Air conduction markers */}
+                  {renderMarkers('air')}
+                  
+                  {/* Bone conduction markers */}
+                  {renderMarkers('bone')}
+                </svg>
+              </div>
+              
+              <div className={`mt-4 text-center text-sm text-gray-600 dark:text-gray-400`}>
+                <span className={colorClass}>{legend}</span>
+              </div>
+            </CardContent>
+          </Card>
+        )}
       
       {/* Tooltip */}
       {tooltip.visible && (

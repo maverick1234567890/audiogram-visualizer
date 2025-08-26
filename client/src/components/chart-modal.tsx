@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { AudiogramChart } from './audiogram-chart';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
@@ -40,49 +41,50 @@ export function ChartModal({
         className="w-[95vw] h-[95vh] max-w-none max-h-none overflow-hidden bg-white dark:bg-gray-900 border shadow-2xl p-6"
         data-testid="chart-modal"
       >
+        <VisuallyHidden>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>Interactive audiogram chart</DialogDescription>
+        </VisuallyHidden>
+        
         {/* Editing Controls - Top Right */}
-        <div className="absolute top-6 right-6 z-10">
-          <fieldset className="flex items-center gap-4 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border">
-            <legend className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
-              {title} Editing:
-            </legend>
+        <div className="absolute top-4 right-4 z-10">
+          <div className="bg-white dark:bg-gray-800 px-3 py-2 rounded-md shadow-sm border">
+            <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">Edit:</div>
             <RadioGroup
               value={ear ? editingMode[ear] : 'air'}
               onValueChange={handleEditingChange}
-              className="flex items-center gap-4"
+              className="flex items-center gap-3"
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
                 <RadioGroupItem 
                   value="air" 
                   id={`modal-${ear}-air`}
                   className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
                 />
-                <Label htmlFor={`modal-${ear}-air`} className="cursor-pointer">Air</Label>
+                <Label htmlFor={`modal-${ear}-air`} className="cursor-pointer text-sm">Air</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
                 <RadioGroupItem 
                   value="bone" 
                   id={`modal-${ear}-bone`}
                   className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
                 />
-                <Label htmlFor={`modal-${ear}-bone`} className="cursor-pointer">Bone</Label>
+                <Label htmlFor={`modal-${ear}-bone`} className="cursor-pointer text-sm">Bone</Label>
               </div>
             </RadioGroup>
-          </fieldset>
+          </div>
         </div>
         
         {/* Full-size Chart */}
-        <div className="w-full h-full flex items-center justify-center">
-          <div className="w-full h-full">
-            <AudiogramChart
-              ear={ear}
-              data={data[ear]}
-              editingMode={editingMode}
-              onUpdateThreshold={onUpdateThreshold}
-              onEnlarge={() => {}} // No enlarge in modal
-              className="w-full h-full"
-            />
-          </div>
+        <div className="w-full h-full">
+          <AudiogramChart
+            ear={ear}
+            data={data[ear]}
+            editingMode={editingMode}
+            onUpdateThreshold={onUpdateThreshold}
+            onEnlarge={() => {}} // No enlarge in modal
+            className="w-full h-full"
+          />
         </div>
       </DialogContent>
     </Dialog>
