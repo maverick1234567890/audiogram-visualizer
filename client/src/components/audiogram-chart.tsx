@@ -210,14 +210,16 @@ export function AudiogramChart({
           );
         }
       } else {
-        // Bone conduction markers (< or >)
-        const direction = ear === 'right' ? -1 : 1; // < for right, > for left
+        // Bone conduction markers (< for right, > for left)
         const size = 5;
         
         return (
           <g key={`${type}-${freq}`} className={`chart-marker ${isEditable ? 'cursor-pointer' : 'cursor-default'}`}>
             <path
-              d={`M ${x + direction * size},${y - size} L ${x - direction * size},${y} L ${x + direction * size},${y + size}`}
+              d={ear === 'right' 
+                ? `M ${x + size},${y - size} L ${x - size},${y} L ${x + size},${y + size}` // < for right ear
+                : `M ${x - size},${y - size} L ${x + size},${y} L ${x - size},${y + size}` // > for left ear
+              }
               fill="none"
               stroke={color}
               strokeWidth="2"

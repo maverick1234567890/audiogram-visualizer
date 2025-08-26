@@ -180,7 +180,7 @@ function drawAudiogramChart(
   drawAudiogramMarkers(ctx, startX + marginLeft, startY + marginTop, plotWidth, plotHeight, data.bone, color, 'bone', title.includes('Right'));
 
   // Draw legend (lowered to avoid collision with frequency axis)
-  const legendY = startY + height - 5;
+  const legendY = startY + height + 10;
   ctx.font = '12px Inter, sans-serif';
   ctx.fillStyle = color;
   ctx.textAlign = 'center';
