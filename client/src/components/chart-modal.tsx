@@ -29,6 +29,15 @@ export function ChartModal({
 }: ChartModalProps) {
   const [showBetaWarning, setShowBetaWarning] = useState(false);
   
+  // Show beta warning when modal opens
+  useEffect(() => {
+    if (isOpen && ear) {
+      setShowBetaWarning(true);
+      const timer = setTimeout(() => setShowBetaWarning(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, ear]);
+  
   if (!ear) return null;
 
   const title = ear === 'right' ? 'Right Ear Audiogram' : 'Left Ear Audiogram';
@@ -38,15 +47,6 @@ export function ChartModal({
       onSetEditingMode(ear, value as 'air' | 'bone');
     }
   };
-  
-  // Show beta warning when modal opens
-  useEffect(() => {
-    if (isOpen) {
-      setShowBetaWarning(true);
-      const timer = setTimeout(() => setShowBetaWarning(false), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
