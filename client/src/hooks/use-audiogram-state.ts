@@ -16,8 +16,8 @@ export interface PatientData {
 }
 
 export interface EditingMode {
-  ear: 'right' | 'left';
-  conduction: 'air' | 'bone';
+  right: 'air' | 'bone';
+  left: 'air' | 'bone';
 }
 
 export interface AudiogramState {
@@ -55,7 +55,7 @@ const initialState: AudiogramState = {
     air: defaultThresholds(),
     bone: defaultBoneThresholds(),
   },
-  editing: { ear: 'right', conduction: 'air' },
+  editing: { right: 'air', left: 'air' },
   patient: { name: '', examDate: '', birthDate: '' },
   theme: 'light',
 };
@@ -105,7 +105,7 @@ export function useAudiogramState() {
   const setEditingMode = useCallback((ear: 'right' | 'left', conduction: 'air' | 'bone') => {
     setState(prev => ({
       ...prev,
-      editing: { ear, conduction },
+      editing: { ...prev.editing, [ear]: conduction },
     }));
   }, []);
 

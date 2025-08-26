@@ -101,10 +101,7 @@
 
 @layer components {
   .audiogram-grid {
-    background-image: 
-      linear-gradient(to right, var(--grid-light) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--grid-light) 1px, transparent 1px);
-    background-size: 40px 40px;
+    /* Remove background grid - we'll use SVG grid lines instead */
   }
   
   .chart-container {

@@ -116,7 +116,7 @@ export default function AudiogramVisualizer() {
         />
 
         {/* Audiogram Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
           <AudiogramChart
             ear="right"
             data={state.right}
@@ -148,7 +148,7 @@ export default function AudiogramVisualizer() {
                     Right Ear Editing:
                   </legend>
                   <RadioGroup
-                    value={state.editing.ear === 'right' ? state.editing.conduction : ''}
+                    value={state.editing.right}
                     onValueChange={handleRightEditingChange}
                     className="flex items-center gap-4"
                   >
@@ -179,7 +179,7 @@ export default function AudiogramVisualizer() {
                     Left Ear Editing:
                   </legend>
                   <RadioGroup
-                    value={state.editing.ear === 'left' ? state.editing.conduction : ''}
+                    value={state.editing.left}
                     onValueChange={handleLeftEditingChange}
                     className="flex items-center gap-4"
                   >
@@ -236,6 +236,7 @@ export default function AudiogramVisualizer() {
         data={state}
         editingMode={state.editing}
         onUpdateThreshold={updateThreshold}
+        onSetEditingMode={setEditingMode}
       />
     </div>
   );

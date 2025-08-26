@@ -1,6 +1,8 @@
 import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { AudiogramChart } from './audiogram-chart';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { EarData, EditingMode } from '@/hooks/use-audiogram-state';
 
 interface ChartModalProps {
@@ -10,6 +12,7 @@ interface ChartModalProps {
   data: { right: EarData; left: EarData };
   editingMode: EditingMode;
   onUpdateThreshold: (ear: 'right' | 'left', conduction: 'air' | 'bone', frequency: number, value: number) => void;
+  onSetEditingMode: (ear: 'right' | 'left', conduction: 'air' | 'bone') => void;
 }
 
 export function ChartModal({ 
@@ -18,28 +21,72 @@ export function ChartModal({
   ear, 
   data, 
   editingMode, 
-  onUpdateThreshold 
+  onUpdateThreshold,
+  onSetEditingMode
 }: ChartModalProps) {
   if (!ear) return null;
 
   const title = ear === 'right' ? 'Right Ear Audiogram' : 'Left Ear Audiogram';
 
+  const handleEditingChange = (value: string) => {
+    if (ear) {
+      onSetEditingMode(ear, value as 'air' | 'bone');
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl w-full max-h-[90vh] overflow-hidden" data-testid="chart-modal">
+      <DialogContent className="max-w-5xl w-[95vw] max-h-[95vh] overflow-hidden" data-testid="chart-modal">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+            Interactive audiogram chart - click to edit thresholds
+          </DialogDescription>
         </DialogHeader>
         
-        <div className="p-0" style={{ height: '70vh' }}>
-          <AudiogramChart
-            ear={ear}
-            data={data[ear]}
-            editingMode={editingMode}
-            onUpdateThreshold={onUpdateThreshold}
-            onEnlarge={() => {}} // No enlarge in modal
-            className="h-full"
-          />
+        <div className="flex flex-col gap-4 h-[75vh]">
+          {/* Editing Controls */}
+          <div className="flex items-center justify-center">
+            <fieldset className="flex items-center gap-4">
+              <legend className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+                {title} Editing:
+              </legend>
+              <RadioGroup
+                value={ear ? editingMode[ear] : 'air'}
+                onValueChange={handleEditingChange}
+                className="flex items-center gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem 
+                    value="air" 
+                    id={`modal-${ear}-air`}
+                    className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
+                  />
+                  <Label htmlFor={`modal-${ear}-air`} className="cursor-pointer">Air</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem 
+                    value="bone" 
+                    id={`modal-${ear}-bone`}
+                    className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
+                  />
+                  <Label htmlFor={`modal-${ear}-bone`} className="cursor-pointer">Bone</Label>
+                </div>
+              </RadioGroup>
+            </fieldset>
+          </div>
+          
+          {/* Chart */}
+          <div className="flex-1 min-h-0">
+            <AudiogramChart
+              ear={ear}
+              data={data[ear]}
+              editingMode={editingMode}
+              onUpdateThreshold={onUpdateThreshold}
+              onEnlarge={() => {}} // No enlarge in modal
+              className="h-full"
+            />
+          </div>
         </div>
       </DialogContent>
     </Dialog>

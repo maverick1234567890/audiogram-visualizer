@@ -80,14 +80,12 @@ export function AudiogramChart({
     const frequency = getFrequencyFromX(scaledX);
     const dbValue = clampDbValue(snapToGrid(getDbFromY(scaledY)));
 
-    // Only update if this ear is being edited
-    if (editingMode.ear === ear) {
-      onUpdateThreshold(ear, editingMode.conduction, frequency, dbValue);
-    }
+    // Update based on current editing mode for this ear
+    onUpdateThreshold(ear, editingMode[ear], frequency, dbValue);
   }, [ear, editingMode, onUpdateThreshold]);
 
   const handleMarkerMouseDown = useCallback((frequency: number, conduction: 'air' | 'bone') => {
-    if (editingMode.ear === ear && editingMode.conduction === conduction) {
+    if (editingMode[ear] === conduction) {
       setDragState({ frequency, conduction });
     }
   }, [ear, editingMode]);
@@ -155,7 +153,7 @@ export function AudiogramChart({
     return frequencies.map(freq => {
       const x = getXPosition(freq);
       const y = getYPosition(thresholds[freq]);
-      const isEditable = editingMode.ear === ear && editingMode.conduction === type;
+      const isEditable = editingMode[ear] === type;
       
       if (isAir) {
         // Air conduction markers
