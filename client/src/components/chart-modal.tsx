@@ -36,7 +36,7 @@ export function ChartModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl w-[90vw] max-h-[90vh] overflow-hidden p-4" data-testid="chart-modal">
+      <DialogContent className="w-[98vw] h-[98vh] max-w-none max-h-none overflow-hidden p-3" data-testid="chart-modal">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
@@ -44,7 +44,7 @@ export function ChartModal({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col gap-3 h-[70vh]">
+        <div className="flex flex-col gap-3 h-[calc(98vh-120px)]">
           {/* Editing Controls */}
           <div className="flex items-center justify-center">
             <fieldset className="flex items-center gap-4">

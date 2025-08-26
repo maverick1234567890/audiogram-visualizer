@@ -159,8 +159,12 @@ function drawAudiogramChart(
   ctx.translate(startX + 20, startY + marginTop + plotHeight / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = 'center';
-  ctx.fillText('dB HL', 0, 0);
+  ctx.fillText('Hearing Level (dB HL)', 0, 0);
   ctx.restore();
+
+  // Draw X-axis label
+  ctx.textAlign = 'center';
+  ctx.fillText('Frequency (Hz)', startX + marginLeft + plotWidth / 2, startY + marginTop + plotHeight + 45);
 
   // Draw data lines and markers
   ctx.strokeStyle = color;

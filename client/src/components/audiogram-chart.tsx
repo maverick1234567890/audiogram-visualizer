@@ -308,7 +308,7 @@ export function AudiogramChart({
                 style={{ fontFamily: 'Inter, sans-serif' }}
                 transform={`rotate(-90, 25, ${CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight / 2})`}
               >
-                dB HL
+                Hearing Level (dB HL)
               </text>
               
               {/* X-axis */}
@@ -343,6 +343,17 @@ export function AudiogramChart({
                   </text>
                 </g>
               ))}
+              
+              {/* X-axis title */}
+              <text
+                x={CHART_CONFIG.marginLeft + CHART_CONFIG.plotWidth / 2}
+                y={CHART_CONFIG.marginTop + CHART_CONFIG.plotHeight + 50}
+                textAnchor="middle"
+                className="text-sm fill-gray-700 dark:fill-gray-300"
+                style={{ fontFamily: 'Inter, sans-serif' }}
+              >
+                Frequency (Hz)
+              </text>
               
               {/* Grid lines */}
               <g opacity="0.3">
