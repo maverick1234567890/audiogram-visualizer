@@ -261,6 +261,7 @@ export function AudiogramChart({
               className="w-full h-full border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 audiogram-grid"
               viewBox={`0 0 ${CHART_CONFIG.width} ${CHART_CONFIG.height}`}
               preserveAspectRatio="xMidYMid meet"
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
               onClick={handleChartClick}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}

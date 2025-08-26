@@ -36,25 +36,25 @@ export function ChartModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="w-[95vw] h-[100vh] max-w-none max-h-[100vh] overflow-hidden p-3" data-testid="chart-modal">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+      <DialogContent className="w-screen h-screen max-w-none max-h-none m-0 rounded-none border-0 overflow-hidden p-4 bg-white dark:bg-gray-900" data-testid="chart-modal">
+        <DialogHeader className="mb-4">
+          <DialogTitle className="text-2xl">{title}</DialogTitle>
           <DialogDescription>
             Interactive audiogram chart - click to edit thresholds
           </DialogDescription>
         </DialogHeader>
         
-        <div className="flex flex-col gap-2 h-[calc(100vh-100px)]">
+        <div className="flex flex-col h-[calc(100vh-120px)]">
           {/* Editing Controls */}
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center mb-4">
             <fieldset className="flex items-center gap-4">
-              <legend className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">
+              <legend className="text-lg font-medium text-gray-700 dark:text-gray-300 mr-2">
                 {title} Editing:
               </legend>
               <RadioGroup
                 value={ear ? editingMode[ear] : 'air'}
                 onValueChange={handleEditingChange}
-                className="flex items-center gap-4"
+                className="flex items-center gap-6"
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem 
@@ -62,7 +62,7 @@ export function ChartModal({
                     id={`modal-${ear}-air`}
                     className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
                   />
-                  <Label htmlFor={`modal-${ear}-air`} className="cursor-pointer">Air</Label>
+                  <Label htmlFor={`modal-${ear}-air`} className="cursor-pointer text-lg">Air</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem 
@@ -70,22 +70,22 @@ export function ChartModal({
                     id={`modal-${ear}-bone`}
                     className={ear === 'right' ? 'text-medical-red' : 'text-medical-blue'}
                   />
-                  <Label htmlFor={`modal-${ear}-bone`} className="cursor-pointer">Bone</Label>
+                  <Label htmlFor={`modal-${ear}-bone`} className="cursor-pointer text-lg">Bone</Label>
                 </div>
               </RadioGroup>
             </fieldset>
           </div>
           
-          {/* Chart */}
-          <div className="flex-1 min-h-0 overflow-hidden flex items-center justify-center p-4">
-            <div className="w-full h-[70vh] max-w-[80vw] max-h-[70vh]">
+          {/* Chart - Full screen with automatic scaling */}
+          <div className="flex-1 min-h-0 flex items-center justify-center">
+            <div className="w-full h-full max-w-full max-h-full flex items-center justify-center">
               <AudiogramChart
                 ear={ear}
                 data={data[ear]}
                 editingMode={editingMode}
                 onUpdateThreshold={onUpdateThreshold}
                 onEnlarge={() => {}} // No enlarge in modal
-                className="h-full w-full"
+                className="w-full h-full object-contain"
               />
             </div>
           </div>
