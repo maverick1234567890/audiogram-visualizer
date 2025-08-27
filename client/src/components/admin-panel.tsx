@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Settings, Eye, EyeOff, Check, X } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Settings, Eye, EyeOff, Check, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function AdminPanel() {
   const [isOpen, setIsOpen] = useState(false);
-  const [masterPassword, setMasterPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [masterPassword, setMasterPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +22,11 @@ export function AdminPanel() {
 
   const handleMasterPasswordSubmit = async () => {
     setIsLoading(true);
-    
+
     // Simulate checking delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    
-    if (masterPassword === 'Konijntje123') {
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    if (masterPassword === "#ORL123") {
       setIsAuthenticated(true);
       toast({
         title: "Admin Access Granted",
@@ -33,9 +38,9 @@ export function AdminPanel() {
         description: "Incorrect master password.",
         variant: "destructive",
       });
-      setMasterPassword('');
+      setMasterPassword("");
     }
-    
+
     setIsLoading(false);
   };
 
@@ -50,22 +55,22 @@ export function AdminPanel() {
     }
 
     setIsLoading(true);
-    
+
     // Simulate password update delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     // Store new password in localStorage for persistence
-    localStorage.setItem('website_password', newPassword);
-    
+    localStorage.setItem("website_password", newPassword);
+
     toast({
       title: "Password Updated",
       description: "Website password has been successfully changed.",
     });
-    
+
     // Reset form
-    setNewPassword('');
+    setNewPassword("");
     setIsAuthenticated(false);
-    setMasterPassword('');
+    setMasterPassword("");
     setIsOpen(false);
     setIsLoading(false);
   };
@@ -73,8 +78,8 @@ export function AdminPanel() {
   const handleClose = () => {
     setIsOpen(false);
     setIsAuthenticated(false);
-    setMasterPassword('');
-    setNewPassword('');
+    setMasterPassword("");
+    setNewPassword("");
     setShowPasswords(false);
   };
 
@@ -102,7 +107,7 @@ export function AdminPanel() {
               Admin Panel
             </DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             {!isAuthenticated ? (
               /* Master Password Input */
@@ -118,7 +123,9 @@ export function AdminPanel() {
                     className="pr-10"
                     disabled={isLoading}
                     data-testid="master-password-input"
-                    onKeyPress={(e) => e.key === 'Enter' && handleMasterPasswordSubmit()}
+                    onKeyPress={(e) =>
+                      e.key === "Enter" && handleMasterPasswordSubmit()
+                    }
                   />
                   <Button
                     type="button"
@@ -142,7 +149,7 @@ export function AdminPanel() {
                     className="flex-1"
                     data-testid="verify-master-password"
                   >
-                    {isLoading ? 'Verifying...' : 'Verify'}
+                    {isLoading ? "Verifying..." : "Verify"}
                   </Button>
                   <Button
                     variant="outline"
@@ -160,7 +167,7 @@ export function AdminPanel() {
                   <Check className="w-4 h-4" />
                   Admin access granted
                 </div>
-                
+
                 <Label htmlFor="new-password">New Website Password</Label>
                 <div className="relative">
                   <Input
@@ -172,7 +179,9 @@ export function AdminPanel() {
                     className="pr-10"
                     disabled={isLoading}
                     data-testid="new-password-input"
-                    onKeyPress={(e) => e.key === 'Enter' && handlePasswordChange()}
+                    onKeyPress={(e) =>
+                      e.key === "Enter" && handlePasswordChange()
+                    }
                   />
                   <Button
                     type="button"
@@ -189,7 +198,7 @@ export function AdminPanel() {
                     )}
                   </Button>
                 </div>
-                
+
                 <div className="flex gap-2">
                   <Button
                     onClick={handlePasswordChange}
@@ -197,7 +206,7 @@ export function AdminPanel() {
                     className="flex-1"
                     data-testid="update-password"
                   >
-                    {isLoading ? 'Updating...' : 'Update Password'}
+                    {isLoading ? "Updating..." : "Update Password"}
                   </Button>
                   <Button
                     variant="outline"
